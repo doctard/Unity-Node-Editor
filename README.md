@@ -102,5 +102,11 @@ public class Float : Node
     }
 }
 ```
-
-
+Also, one very important thing, when you're adding something in the scripts that uses editor functions, make sure to add
+```
+#if UNITY_EDITOR
+//code goes here
+#endif
+```
+otherwise you'll end up getting build errors about certain scripts not being in the editor folder.
+I had to add these kinds of segments to most of the node classes since nearly all of them has some kind of function that either prints something in the editor or has an input field in the editor.
