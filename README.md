@@ -21,7 +21,8 @@ Type a name in the text field on the right side of the window
 Press Save
 To load a canvas, type a name and press Load
 If you want to make your own editor using the framework, first of all you'd need to edit the SetupNodeTypes function, to include the nodes unique to your editor
- 
+
+```
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
@@ -47,11 +48,13 @@ public class AIScriptEditor : GraphEditorWindow
         window = (AIScriptEditor)EditorWindow.GetWindow(typeof(AIScriptEditor));
     }
 }
-
+```
 
 After that you'd have to actually create said nodes as C# scripts. They need to inherit from the Node class, or anything else that inherits from it(Multiplication/Addition inherit from Float, Float inherits from Node)
- 
- using UnityEngine;
+
+
+``` 
+using UnityEngine;
 using System.Collections;
 using UnityEditor;
 public class Float : Node
@@ -89,6 +92,6 @@ public class Float : Node
         temp.value = value;
     }
 }
-
+```
 
 
