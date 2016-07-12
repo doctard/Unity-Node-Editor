@@ -65,7 +65,9 @@ After that you'd have to actually create said nodes as C# scripts. They need to 
 ``` 
 using UnityEngine;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 public class Float : Node
 {
     //the value for the float that you'll see in the editor window
@@ -79,6 +81,10 @@ public class Float : Node
     {
         return value;
     }
+    public virtual float GetResult(AIReader reader)
+    {
+        return value;
+    }
     //we use this to show the type of the node in the editor. Every unique node has it's own version
     public override string Type() { return "Float"; }
     //we use this to check what kind of node this is, mainly for inherited ones.
@@ -87,11 +93,17 @@ public class Float : Node
     //If is Branch (will add Switch later)
     public override string BaseType() { return "Float"; }
     //editor function that draws the node
+#if UNITY_EDITOR
     public override void DrawNode(int id = 0)
     {
-        value = EditorGUILayout.FloatField("Value ", value);
+        PrintValue();
         base.DrawNode(id);
     }
+    protected virtual void PrintValue()
+    {
+        value = EditorGUILayout.FloatField("Value ", value);
+    }
+#endif
     //function used for when we're saving/loading the nodes, since we want new nodes, not references
     //we do this because it's very easy to accidentally ruin all the data in an already existing canvas this way
     public override void CopyTo(Node other)
