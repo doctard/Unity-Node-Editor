@@ -5,6 +5,7 @@ using UnityEditor;
 #endif
 public class Addition : Float
 {
+    //get the sum of all the connected nodes
     public override float GetResult()
     {
         float s = 0;
@@ -19,6 +20,7 @@ public class Addition : Float
     {
         return "Addition";
     }
+    //make sure we're only attaching Floats
     public override void Attach()
     {
         if (attachNode.BaseType() == "Float")
@@ -27,6 +29,7 @@ public class Addition : Float
             Debug.LogError("Wrong type (should be Float)");
     }
 #if UNITY_EDITOR
+    //print the name of each connected node
     public override void DrawNode(int id = 0)
     {
         for (int i = 0; i < referencedBy.Count; i++)
@@ -35,7 +38,7 @@ public class Addition : Float
         }
         base.DrawNode(id);
     }
-
+    //use a label instead of an Input field
     protected override void PrintValue()
     {
         value = GetResult();

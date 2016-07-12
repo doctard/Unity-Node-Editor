@@ -5,28 +5,26 @@ using UnityEditor;
 #endif
 public class GreaterThan : Bool
 {
+    //get a result, only if there are two connected nodes (it's impossible for there to be more than two)
     public override bool GetResult()
     {
-        if (referencedBy.Count == 1)
+        if (referencedBy.Count <= 1)
         {
             return false;
         }
         else
-       if (referencedBy.Count == 2)
         {
             Float temp1 = referencedBy[0] as Float;
             Float temp2 = referencedBy[1] as Float;
             return temp1.GetResult() > temp2.GetResult();
         }
-        else
-        {
-            return false;
-        }
+
     }
     public override string Type()
     {
         return "Greater than";
     }
+    //only attach floats, and no more than two
     public override void Attach()
     {
         if (referencedBy.Count < 2 && attachNode.BaseType() == "Float")

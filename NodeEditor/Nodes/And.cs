@@ -5,6 +5,7 @@ using UnityEditor;
 #endif
 public class And : Bool
 {
+    //get the && of all the connected nodes. hopefully this is the correct formula
     public override bool GetResult()
     {
         if (referencedBy.Count >= 1)
@@ -25,6 +26,7 @@ public class And : Bool
     {
         return "And";
     }
+    //make sure we're only attaching bools
     public override void Attach()
     {
         if (attachNode.BaseType() == "Bool")

@@ -12,6 +12,7 @@ public class Branch : Node
     {
         return "Branch";
     }
+    //reference the node in the neighbouring canvas, not this canvas
     public override void CopyTo(Node other)
     {
         base.CopyTo(other);

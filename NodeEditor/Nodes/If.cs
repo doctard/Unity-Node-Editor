@@ -5,12 +5,15 @@ using UnityEditor;
 #endif
 public class If : Branch
 {
+    //the result
+    //if there's only one possible answer, the result is either it, or null
+    //otherwise if it's not it, and there is another answer, it's the other answer
+    public Bool condition;
     public override Node GetResult()
     {
-        if (referencedBy.Count >= 1 && connectedTo.Count >= 1)
+        if (condition != null && connectedTo.Count >= 1)
         {
-            Bool temp = referencedBy[0] as Bool;
-            if (temp.GetResult() == true)
+            if (condition.GetResult() == true)
             {
                 return connectedTo[0];
             }
@@ -31,10 +34,30 @@ public class If : Branch
     {
         return "If";
     }
+    public override void CopyTo(Node other)
+    {
+        If temp = other as If;
+        temp.condition = temp.parent.nodes[condition.ID] as Bool;
+        base.CopyTo(other);
+    }
+    //only attach bools, and 
     public override void Attach()
     {
-        if (attachNode.BaseType() == "Bool" && referencedBy.Count == 0)
+        if (attachNode.BaseType() == "Bool")
+        {
+            if (condition != null)
+            {
+                condition.connectedTo.Remove(this);
+                referencedBy.Remove(condition);
+            }
+            condition = attachNode as Bool;
             base.Attach();
+        }
+        else
+        if (attachNode.BaseType() == "Branch")
+        {
+            base.Attach();
+        }
         else
             Debug.LogError("Wrong type (should be Float) or you have more than one Bool connected");
     }
@@ -42,9 +65,9 @@ public class If : Branch
     public override void DrawNode(int id = 0)
     {
         value = GetResult();
-        if (referencedBy.Count == 1)
+        if (condition != null)
         {
-            GUILayout.Label("Condition node: " + referencedBy[0].name);
+            GUILayout.Label("Condition node: " + condition.name);
         }
         else
         {
@@ -66,10 +89,9 @@ public class If : Branch
             GUILayout.Label("Answer 1: " + connectedTo[0].name);
             GUILayout.Label("Answer 2: " + connectedTo[1].name);
         }
-        if (referencedBy.Count == 1 && connectedTo.Count >= 1)
+        if (condition != null && connectedTo.Count >= 1)
         {
-            Bool temp = referencedBy[0] as Bool;
-            if (temp.GetResult() == true)
+            if (condition.GetResult() == true)
             {
                 GUILayout.Label("Result: " + value.name);
             }

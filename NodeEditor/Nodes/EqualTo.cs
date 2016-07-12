@@ -5,19 +5,17 @@ using UnityEditor;
 #endif
 public class EqualTo : Bool
 {
+    //get the equation result
+    //check if we're checking floats or bools
     public override bool GetResult()
     {
         if (referencedBy.Count == 1)
         {
-            GUILayout.Label("Node 1: " + referencedBy[0].name);
-            GUILayout.Label("Node 2: null");
             return false;
         }
         else
         if (referencedBy.Count == 2)
         {
-            GUILayout.Label("Node 1: " + referencedBy[0].name);
-            GUILayout.Label("Node 2: " + referencedBy[1].name);
             if (ConnectType == "Float")
             {
                 Float temp1 = referencedBy[0] as Float;
@@ -37,8 +35,6 @@ public class EqualTo : Bool
         else
         {
             ConnectType = "";
-            GUILayout.Label("Node 1: null");
-            GUILayout.Label("Node 2: null");
             return false;
         }
     }
@@ -47,6 +43,7 @@ public class EqualTo : Bool
         return "Equal to";
     }
     string ConnectType = "";
+    //attach one element, but the next one has to be the same type
     public override void Attach()
     {
         if (referencedBy.Count == 0)
@@ -76,6 +73,7 @@ public class EqualTo : Bool
         value = GetResult();
         base.DrawNode(id);
     }
+    //always print that there SHOULD be two connected nodes
     protected override void PrintValue()
     {
         if (referencedBy.Count == 1)
