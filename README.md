@@ -1,14 +1,23 @@
 Unity Node Editor framework
 a simple framework for creating node editors in unity (similar to mecanim)
 currently only has some nodes for math/bool related functions:
+
 Float - has a float value
+
 Bool - has a bool value
+
 Addition - adds multiple float nodes
+
 Multiplication - multiplies multiple float nodes
+
 And - '&&' for multiple bool nodes
+
 Or - '||' for multiple bool nodes
+
 EqualTo - compares two floats or bools
-If - checks if a bool is true or not, and returns one of two possible nodes as the next correct step
+
+If - checks if a bool is true or not, and returns one of two 
+possible nodes as the next correct step
 
 In order to create and save a canvas in the framework do this:
 Open up the framework window from Window/Node Editor
