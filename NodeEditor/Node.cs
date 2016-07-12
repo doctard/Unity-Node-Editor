@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 public class Node : ScriptableObject
 {
     [HideInInspector]
@@ -17,7 +19,13 @@ public class Node : ScriptableObject
     {
         attachNode.connectedTo.Add(this);
         referencedBy.Add(attachNode);
+        if (attachNode.BaseType() == "Branch" && attachNode.Type() != "If")
+        {
+            Branch temp = attachNode as Branch;
+            temp.value = this;
+        }
     }
+#if UNITY_EDITOR
     public virtual void DrawNode(int id = 0)
     {
         ID = id;
@@ -55,6 +63,7 @@ public class Node : ScriptableObject
         }
         GUI.DragWindow();
     }
+#endif
     protected void Detach()
     {
         for (int i = connectedTo.Count - 1; i >= 0; i--)

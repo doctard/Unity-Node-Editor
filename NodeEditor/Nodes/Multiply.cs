@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 public class Multiply : Float
 {
     public override float GetResult()
@@ -25,14 +27,21 @@ public class Multiply : Float
         else
             Debug.LogError("Wrong type (should be Float)");
     }
+#if UNITY_EDITOR
+
     public override void DrawNode(int id = 0)
     {
         for (int i = 0; i < referencedBy.Count; i++)
         {
             GUILayout.Label("Node " + (i + 1).ToString() + ": " + referencedBy[i].name);
         }
-        value = GetResult();
         base.DrawNode(id);
     }
+    protected override void PrintValue()
+    {
+        value = GetResult();
+        EditorGUILayout.LabelField("Value " + value.ToString());
+    }
 
+#endif
 }

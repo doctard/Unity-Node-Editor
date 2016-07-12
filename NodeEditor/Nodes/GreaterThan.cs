@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class GreaterThan : Bool
 {
     public override bool GetResult()
@@ -36,6 +38,9 @@ public class GreaterThan : Bool
             Debug.LogError("There can only be two connections, or you've connected an incorrect type (should have been a float)");
         }
     }
+#if UNITY_EDITOR
+
+
     public override void DrawNode(int id = 0)
     {
         if (referencedBy.Count == 1)
@@ -57,4 +62,10 @@ public class GreaterThan : Bool
         value = GetResult();
         base.DrawNode(id);
     }
+    protected override void PrintValue()
+    {
+        value = GetResult();
+        EditorGUILayout.LabelField("Value " + value.ToString());
+    }
+#endif
 }

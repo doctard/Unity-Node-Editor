@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class EqualTo : Bool
 {
     public override bool GetResult()
@@ -62,15 +64,37 @@ public class EqualTo : Bool
             Debug.LogError("There can only be two connections, or you've connected an incorrect type (should have been a " + ConnectType + ")");
         }
     }
-    public override void DrawNode(int id = 0)
-    {
-        value = GetResult();
-        base.DrawNode(id);
-    }
     public override void CopyTo(Node other)
     {
         base.CopyTo(other);
         EqualTo temp = (EqualTo)other;
         temp.ConnectType = ConnectType;
     }
+#if UNITY_EDITOR
+    public override void DrawNode(int id = 0)
+    {
+        value = GetResult();
+        base.DrawNode(id);
+    }
+    protected override void PrintValue()
+    {
+        if (referencedBy.Count == 1)
+        {
+            GUILayout.Label("Node 1: " + referencedBy[0].name);
+            GUILayout.Label("Node 2: null");
+        }
+        else
+        if (referencedBy.Count == 2)
+        {
+            GUILayout.Label("Node 1: " + referencedBy[0].name);
+            GUILayout.Label("Node 2: " + referencedBy[1].name);
+        }
+        else
+        {
+            GUILayout.Label("Node 1: null");
+            GUILayout.Label("Node 2: null");
+        }
+        EditorGUILayout.LabelField("Value " + value.ToString());
+    }
+#endif
 }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class And : Bool
 {
     public override bool GetResult()
@@ -30,6 +32,7 @@ public class And : Bool
         else
             Debug.LogError("Wrong type (should be Bool)");
     }
+#if UNITY_EDITOR
     public override void DrawNode(int id = 0)
     {
         value = GetResult();
@@ -43,4 +46,11 @@ public class And : Bool
         }
         base.DrawNode(id);
     }
+
+    protected override void PrintValue()
+    {
+        value = GetResult();
+        EditorGUILayout.LabelField("Value " + value.ToString());
+    }
+#endif
 }

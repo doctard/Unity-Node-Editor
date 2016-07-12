@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class If : Branch
 {
     public override Node GetResult()
     {
-        if (referencedBy.Count == 1 && connectedTo.Count >= 1)
+        if (referencedBy.Count >= 1 && connectedTo.Count >= 1)
         {
             Bool temp = referencedBy[0] as Bool;
             if (temp.GetResult() == true)
@@ -36,6 +38,7 @@ public class If : Branch
         else
             Debug.LogError("Wrong type (should be Float) or you have more than one Bool connected");
     }
+#if UNITY_EDITOR
     public override void DrawNode(int id = 0)
     {
         value = GetResult();
@@ -83,5 +86,5 @@ public class If : Branch
 
         base.DrawNode(id);
     }
-
+#endif
 }

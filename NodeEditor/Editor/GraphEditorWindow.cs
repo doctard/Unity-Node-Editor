@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 using VNKit;
+using System.Text.RegularExpressions;
 public class GraphEditorWindow : EditorWindow
 {
     protected virtual void SetupNodeTypes()
@@ -60,6 +61,7 @@ public class GraphEditorWindow : EditorWindow
     {
         window = (GraphEditorWindow)EditorWindow.GetWindow(typeof(GraphEditorWindow));
     }
+    string StartNode = "";
     protected virtual void OnGUI()
     {
         SetupNodeTypes();
@@ -85,13 +87,24 @@ public class GraphEditorWindow : EditorWindow
         }
         buttonRect.y += 25;
         canvas.name = GUI.TextField(buttonRect, canvas.name);
+        buttonRect.y += 25;
+        StartNode = GUI.TextField(buttonRect, StartNode);
+        StartNode = Regex.Replace(StartNode, @"[^0-9]", "");
+        if (StartNode != "")
+        {
+            canvas.StartNode = int.Parse(StartNode);
+        }
+        else
+        {
+            canvas.StartNode = 0;
+        }
     }
     protected virtual void CreateNewCanvas()
     {
         ClearMemory();
         canvas = CreateInstance<ScriptTemplate>();
     }
-    void ClearMemory()
+    protected void ClearMemory()
     {
         if (canvas != null)
         {
@@ -111,6 +124,7 @@ public class GraphEditorWindow : EditorWindow
 
         a.name = b.name;
         a.nodes = new List<Node>();
+        a.StartNode = b.StartNode;
         for (int i = 0; i < b.nodes.Count; i++)
         {
             Node temp = CreateInstance(b.nodes[i].GetType()) as Node;
